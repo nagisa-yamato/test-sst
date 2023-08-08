@@ -5,14 +5,36 @@ module.exports = {
     node: true,
   },
   extends: [
-    // https://github.com/standard/eslint-config-standard-with-typescript
-    "standard-with-typescript",
     // https://nextjs.org/docs/app/building-your-application/configuring/eslint#additional-configurations
     "next/core-web-vitals",
     // https://github.com/prettier/eslint-config-prettier
     "prettier",
   ],
   overrides: [
+    {
+      files: ["*.{ts,tsx}"],
+      processor: "@graphql-eslint/graphql",
+    },
+    {
+      files: ["*.graphql"],
+      extends: ["plugin:@graphql-eslint/operations-recommended"],
+      parserOptions: {
+        operations: "./src/**/*.(ts|tsx)",
+        schema: "https://rickandmortyapi.com/graphql",
+      },
+    },
+    {
+      extends: [
+        // https://github.com/standard/eslint-config-standard-with-typescript
+        "standard-with-typescript",
+        "prettier",
+      ],
+      files: ["./**/*.{ts,tsx}"],
+      parserOptions: {
+        project: true,
+        tsconfigRootDir: __dirname,
+      },
+    },
     {
       env: {
         node: true,
@@ -26,7 +48,5 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
-    project: true,
-    tsconfigRootDir: __dirname,
   },
 };

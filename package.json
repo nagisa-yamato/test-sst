@@ -8,16 +8,22 @@
     "start": "next start",
     "lint": "next lint",
     "format:write": "prettier . --write",
-    "sso": "aws sso login --sso-session=nagisa-yamato"
+    "sso": "aws sso login --sso-session=nagisa-yamato",
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
     "autoprefixer": "10.4.14",
+    "graphql": "^16.7.1",
     "next": "13.4.13",
     "postcss": "8.4.27",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "5.0.0",
+    "@graphql-codegen/client-preset": "4.1.0",
+    "@graphql-eslint/eslint-plugin": "^3.20.1",
+    "@parcel/watcher": "^2.2.0",
     "@types/node": "20.4.8",
     "@types/react": "18.2.18",
     "@types/react-dom": "18.2.7",
