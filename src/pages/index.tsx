@@ -1,10 +1,21 @@
-import { EpisodesQueryDocument } from "@/gql/queries/Episodes";
-import { useGraphQL } from "@/lib/react-query";
+import { createEpisodesQueryKey, fetchEpisodes } from "@/gql/queries/Episodes";
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Index(): JSX.Element {
-  const { data } = useGraphQL(EpisodesQueryDocument, {
-    page: 1,
+  const router = useRouter();
+  const variables = {
+    page: typeof router.query.page === "string" ? Number(router.query.page) : 1,
+  };
+  const { data } = useQuery({
+    queryKey: createEpisodesQueryKey(variables),
+    queryFn: async ({ signal }) =>
+      await fetchEpisodes({
+        variables,
+        signal,
+      }),
+    enabled: router.isReady,
   });
 
   return (

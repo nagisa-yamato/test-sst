@@ -1,23 +1,22 @@
-import { type EpisodeQuery } from "@/gql/generated/graphql";
-import { EpisodeQueryDocument } from "@/gql/queries/Episode";
-import { graphQLClient } from "@/lib/graphql-request";
+import { type EpisodeQueryVariables } from "@/gql/generated/graphql";
+import { createEpisodeQueryKey, fetchEpisode } from "@/gql/queries/Episode";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 
 export default function Episode(): JSX.Element {
-  const [data, setData] = useState<EpisodeQuery | null>(null);
   const router = useRouter();
-  useEffect(() => {
-    async function hoge(episodeId: string): Promise<void> {
-      const episode = await graphQLClient.request(EpisodeQueryDocument, {
-        episodeId,
-      });
-      setData(episode);
-    }
-    if (typeof router.query.episodeId === "string") {
-      void hoge(router.query.episodeId);
-    }
-  }, [router.query.episodeId]);
+  const variables: EpisodeQueryVariables = {
+    episodeId: String(router.query.episodeId),
+  };
+  const { data } = useQuery({
+    queryKey: createEpisodeQueryKey(variables),
+    queryFn: async ({ signal }) => await fetchEpisode({ variables, signal }),
+    enabled: router.isReady,
+  });
 
-  return <div>{JSON.stringify(data)}</div>;
+  return (
+    <article>
+      <h1>{data?.episode?.name}</h1>
+    </article>
+  );
 }
