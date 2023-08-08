@@ -6,7 +6,8 @@
     "dev": "sst bind next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "sso": "aws sso login --sso-session=nagisa-yamato"
   },
   "dependencies": {
     "autoprefixer": "10.4.14",
