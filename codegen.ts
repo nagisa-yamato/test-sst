@@ -5,6 +5,7 @@ const config: CodegenConfig = {
   schema: "https://rickandmortyapi.com/graphql",
   // https://the-guild.dev/graphql/codegen/docs/config-reference/documents-field#document-scanner
   documents: "src/**/!(*.d).{ts,tsx}",
+  ignoreNoDocuments: true,
   generates: {
     "src/gql/generated/": {
       preset: "client",

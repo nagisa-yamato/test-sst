@@ -215,46 +215,21 @@ export type InfoFragment = {
   prev?: number | null;
 } & { " $fragmentName"?: "InfoFragment" };
 
-export type OriginFragment = {
-  __typename?: "Location";
-  created?: string | null;
-  dimension?: string | null;
-  id?: string | null;
-  name?: string | null;
-  type?: string | null;
-} & { " $fragmentName"?: "OriginFragment" };
+export type EpisodeQueryVariables = Exact<{
+  episodeId: Scalars["ID"]["input"];
+}>;
 
-export type CharacterEpisodeFragment = {
-  __typename?: "Episode";
-  id?: string | null;
-  name?: string | null;
-  episode?: string | null;
-} & { " $fragmentName"?: "CharacterEpisodeFragment" };
-
-export type EpisodesCharacterFragment = {
-  __typename?: "Character";
-  type?: string | null;
-  status?: string | null;
-  species?: string | null;
-  name?: string | null;
-  image?: string | null;
-  id?: string | null;
-  gender?: string | null;
-  created?: string | null;
-  origin?:
-    | ({ __typename?: "Location" } & {
-        " $fragmentRefs"?: { OriginFragment: OriginFragment };
-      })
-    | null;
-  episode: Array<
-    | ({ __typename?: "Episode" } & {
-        " $fragmentRefs"?: {
-          CharacterEpisodeFragment: CharacterEpisodeFragment;
-        };
-      })
-    | null
-  >;
-} & { " $fragmentName"?: "EpisodesCharacterFragment" };
+export type EpisodeQuery = {
+  __typename?: "Query";
+  episode?: {
+    __typename?: "Episode";
+    air_date?: string | null;
+    episode?: string | null;
+    id?: string | null;
+    name?: string | null;
+    created?: string | null;
+  } | null;
+};
 
 export type EpisodesQueryVariables = Exact<{
   page?: InputMaybe<Scalars["Int"]["input"]>;
@@ -271,19 +246,9 @@ export type EpisodesQuery = {
       | null;
     results?: Array<{
       __typename?: "Episode";
-      air_date?: string | null;
-      created?: string | null;
       episode?: string | null;
       id?: string | null;
       name?: string | null;
-      characters: Array<
-        | ({ __typename?: "Character" } & {
-            " $fragmentRefs"?: {
-              EpisodesCharacterFragment: EpisodesCharacterFragment;
-            };
-          })
-        | null
-      >;
     } | null> | null;
   } | null;
 };
@@ -310,136 +275,58 @@ export const InfoFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<InfoFragment, unknown>;
-export const OriginFragmentDoc = {
+export const EpisodeDocument = {
   kind: "Document",
   definitions: [
     {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Origin" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "Location" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "created" } },
-          { kind: "Field", name: { kind: "Name", value: "dimension" } },
-          { kind: "Field", name: { kind: "Name", value: "id" } },
-          { kind: "Field", name: { kind: "Name", value: "name" } },
-          { kind: "Field", name: { kind: "Name", value: "type" } },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<OriginFragment, unknown>;
-export const CharacterEpisodeFragmentDoc = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "CharacterEpisode" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "Episode" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "id" } },
-          { kind: "Field", name: { kind: "Name", value: "name" } },
-          { kind: "Field", name: { kind: "Name", value: "episode" } },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<CharacterEpisodeFragment, unknown>;
-export const EpisodesCharacterFragmentDoc = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "EpisodesCharacter" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "Character" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "type" } },
-          { kind: "Field", name: { kind: "Name", value: "status" } },
-          { kind: "Field", name: { kind: "Name", value: "species" } },
-          { kind: "Field", name: { kind: "Name", value: "name" } },
-          { kind: "Field", name: { kind: "Name", value: "image" } },
-          { kind: "Field", name: { kind: "Name", value: "id" } },
-          { kind: "Field", name: { kind: "Name", value: "gender" } },
-          { kind: "Field", name: { kind: "Name", value: "created" } },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "origin" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Origin" },
-                },
-              ],
-            },
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "Episode" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "episodeId" },
           },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
           {
             kind: "Field",
             name: { kind: "Name", value: "episode" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "episodeId" },
+                },
+              },
+            ],
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "CharacterEpisode" },
-                },
+                { kind: "Field", name: { kind: "Name", value: "air_date" } },
+                { kind: "Field", name: { kind: "Name", value: "episode" } },
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "created" } },
               ],
             },
           },
         ],
       },
     },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Origin" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "Location" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "created" } },
-          { kind: "Field", name: { kind: "Name", value: "dimension" } },
-          { kind: "Field", name: { kind: "Name", value: "id" } },
-          { kind: "Field", name: { kind: "Name", value: "name" } },
-          { kind: "Field", name: { kind: "Name", value: "type" } },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "CharacterEpisode" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "Episode" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "id" } },
-          { kind: "Field", name: { kind: "Name", value: "name" } },
-          { kind: "Field", name: { kind: "Name", value: "episode" } },
-        ],
-      },
-    },
   ],
-} as unknown as DocumentNode<EpisodesCharacterFragment, unknown>;
+} as unknown as DocumentNode<EpisodeQuery, EpisodeQueryVariables>;
 export const EpisodesDocument = {
   kind: "Document",
   definitions: [
@@ -494,74 +381,16 @@ export const EpisodesDocument = {
                     selections: [
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "air_date" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "created" },
-                      },
-                      {
-                        kind: "Field",
                         name: { kind: "Name", value: "episode" },
                       },
                       { kind: "Field", name: { kind: "Name", value: "id" } },
                       { kind: "Field", name: { kind: "Name", value: "name" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "characters" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "FragmentSpread",
-                              name: {
-                                kind: "Name",
-                                value: "EpisodesCharacter",
-                              },
-                            },
-                          ],
-                        },
-                      },
                     ],
                   },
                 },
               ],
             },
           },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Origin" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "Location" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "created" } },
-          { kind: "Field", name: { kind: "Name", value: "dimension" } },
-          { kind: "Field", name: { kind: "Name", value: "id" } },
-          { kind: "Field", name: { kind: "Name", value: "name" } },
-          { kind: "Field", name: { kind: "Name", value: "type" } },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "CharacterEpisode" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "Episode" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "id" } },
-          { kind: "Field", name: { kind: "Name", value: "name" } },
-          { kind: "Field", name: { kind: "Name", value: "episode" } },
         ],
       },
     },
@@ -579,53 +408,6 @@ export const EpisodesDocument = {
           { kind: "Field", name: { kind: "Name", value: "next" } },
           { kind: "Field", name: { kind: "Name", value: "pages" } },
           { kind: "Field", name: { kind: "Name", value: "prev" } },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "EpisodesCharacter" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "Character" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "type" } },
-          { kind: "Field", name: { kind: "Name", value: "status" } },
-          { kind: "Field", name: { kind: "Name", value: "species" } },
-          { kind: "Field", name: { kind: "Name", value: "name" } },
-          { kind: "Field", name: { kind: "Name", value: "image" } },
-          { kind: "Field", name: { kind: "Name", value: "id" } },
-          { kind: "Field", name: { kind: "Name", value: "gender" } },
-          { kind: "Field", name: { kind: "Name", value: "created" } },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "origin" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Origin" },
-                },
-              ],
-            },
-          },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "episode" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "CharacterEpisode" },
-                },
-              ],
-            },
-          },
         ],
       },
     },

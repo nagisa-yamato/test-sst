@@ -5,6 +5,8 @@ module.exports = {
     node: true,
   },
   extends: [
+    // https://tanstack.com/query/latest/docs/react/eslint/eslint-plugin-query
+    "plugin:@tanstack/eslint-plugin-query/recommended",
     // https://nextjs.org/docs/app/building-your-application/configuring/eslint#additional-configurations
     "next/core-web-vitals",
     // https://github.com/prettier/eslint-config-prettier
