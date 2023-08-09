@@ -8,6 +8,14 @@ import {
   type EpisodeQueryVariables,
 } from "../generated/graphql";
 
+export const EpisodeCharacterFragment = graphql(`
+  fragment EpisodeCharacter on Character {
+    id
+    image
+    name
+  }
+`);
+
 export const EpisodeQueryDocument = graphql(`
   query Episode($episodeId: ID!) {
     episode(id: $episodeId) {
@@ -16,6 +24,9 @@ export const EpisodeQueryDocument = graphql(`
       id
       name
       created
+      characters {
+        ...EpisodeCharacter
+      }
     }
   }
 `);

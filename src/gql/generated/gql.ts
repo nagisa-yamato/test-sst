@@ -15,7 +15,9 @@ import type { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-
 const documents = {
   "\n  fragment Info on Info {\n    count\n    next\n    pages\n    prev\n  }\n":
     types.InfoFragmentDoc,
-  "\n  query Episode($episodeId: ID!) {\n    episode(id: $episodeId) {\n      air_date\n      episode\n      id\n      name\n      created\n    }\n  }\n":
+  "\n  fragment EpisodeCharacter on Character {\n    id\n    image\n    name\n  }\n":
+    types.EpisodeCharacterFragmentDoc,
+  "\n  query Episode($episodeId: ID!) {\n    episode(id: $episodeId) {\n      air_date\n      episode\n      id\n      name\n      created\n      characters {\n        ...EpisodeCharacter\n      }\n    }\n  }\n":
     types.EpisodeDocument,
   "\n  query Episodes($page: Int) {\n    episodes(page: $page) {\n      info {\n        ...Info\n      }\n      results {\n        episode\n        id\n        name\n      }\n    }\n  }\n":
     types.EpisodesDocument,
@@ -45,8 +47,14 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "\n  query Episode($episodeId: ID!) {\n    episode(id: $episodeId) {\n      air_date\n      episode\n      id\n      name\n      created\n    }\n  }\n",
-): (typeof documents)["\n  query Episode($episodeId: ID!) {\n    episode(id: $episodeId) {\n      air_date\n      episode\n      id\n      name\n      created\n    }\n  }\n"];
+  source: "\n  fragment EpisodeCharacter on Character {\n    id\n    image\n    name\n  }\n",
+): (typeof documents)["\n  fragment EpisodeCharacter on Character {\n    id\n    image\n    name\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  query Episode($episodeId: ID!) {\n    episode(id: $episodeId) {\n      air_date\n      episode\n      id\n      name\n      created\n      characters {\n        ...EpisodeCharacter\n      }\n    }\n  }\n",
+): (typeof documents)["\n  query Episode($episodeId: ID!) {\n    episode(id: $episodeId) {\n      air_date\n      episode\n      id\n      name\n      created\n      characters {\n        ...EpisodeCharacter\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

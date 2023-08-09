@@ -39,8 +39,8 @@ export default function Index(): JSX.Element {
 
   return (
     <article>
-      <h1>Episodes</h1>
-      <ul>
+      <h1 className="mb-4 text-2xl">Episodes</h1>
+      <ul className="flex flex-col gap-y-2">
         {data?.episodes?.results?.map(
           (result) =>
             result?.id != null && (

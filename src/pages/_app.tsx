@@ -7,9 +7,13 @@ import {
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { type AppProps } from "next/app";
-import { Inter } from "next/font/google";
+import { Noto_Sans_JP } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+const notoSansJP = Noto_Sans_JP({
+  weight: ["400", "700"],
+  // https://nextjs.org/docs/messages/google-fonts-missing-subsets#disable-preloading-for-that-font
+  preload: false,
+});
 
 export default function App({
   Component,
@@ -20,7 +24,7 @@ export default function App({
   return (
     <QueryClientProvider client={customQueryClient}>
       <Hydrate state={pageProps.dehydratedState}>
-        <main className={inter.className}>
+        <main className={`${notoSansJP.className} p-6`}>
           <Component {...pageProps} />
         </main>
         <ReactQueryDevtools />
