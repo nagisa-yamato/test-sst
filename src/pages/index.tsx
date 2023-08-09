@@ -3,6 +3,7 @@ import { QueryClient, dehydrate, useQuery } from "@tanstack/react-query";
 import { type GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Config } from "sst/node/config";
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const queryClient = new QueryClient();
@@ -12,7 +13,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   await queryClient.prefetchQuery({
     queryKey: createEpisodesQueryKey(variables),
-    queryFn: async ({ signal }) => await fetchEpisodes({ signal, variables }),
+    queryFn: async ({ signal }) =>
+      await fetchEpisodes({ signal, variables, url: Config.API_ENDPOINT }),
   });
 
   return {

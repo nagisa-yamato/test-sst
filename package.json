@@ -3,12 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "sst bind next dev",
+    "dev": "sst bind next dev --stage dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "format:write": "prettier . --write",
     "sso": "aws sso login --sso-session=nagisa-yamato",
+    "sst:dev": "sst dev --stage dev",
+    "sst:deploy": "sst deploy --stage prod",
+    "sst:secrets": "sst secrets",
     "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {

@@ -1,8 +1,9 @@
+import { CLIENT_API_ENDPOINT } from "@/constants";
 import { graphql } from "@/gql/generated";
-import { graphQLClient } from "@/lib/graphql-request";
 import { type FetchArgsBase } from "@/types";
 import { type QueryKey } from "@tanstack/react-query";
 import { type OperationDefinitionNode } from "graphql";
+import request from "graphql-request";
 import {
   type EpisodesQuery,
   type EpisodesQueryVariables,
@@ -28,10 +29,12 @@ interface FetchEpisodesArgs extends FetchArgsBase {
 }
 
 export const fetchEpisodes = async ({
+  url = CLIENT_API_ENDPOINT,
   variables,
   signal,
 }: FetchEpisodesArgs): Promise<EpisodesQuery> =>
-  await graphQLClient.request({
+  await request({
+    url,
     document: EpisodesQueryDocument,
     variables,
     signal,

@@ -54,4 +54,6 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
+  // https://github.com/dotansimha/graphql-code-generator/issues/9573
+  ignorePatterns: ["/src/gql/generated/"],
 };

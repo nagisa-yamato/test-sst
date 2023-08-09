@@ -1,22 +1,20 @@
+import Site from "@/stacks/site";
 import { type SSTConfig } from "sst";
-import { NextjsSite } from "sst/constructs";
 
 export default {
-  config(input) {
+  config({ stage }) {
     return {
       name: "test-sst",
       region: "ap-northeast-1",
-      profile: `nagisa-yamato-${input.stage === "production" ? "prod" : "dev"}`,
+      profile: `nagisa-yamato-${stage ?? "dev"}`,
     };
   },
   stacks(app) {
-    app.stack(function Site({ stack }) {
-      const site = new NextjsSite(stack, "site");
-      stack.addOutputs({
-        SiteUrl: site.url,
-      });
-    });
+    app.stack(Site);
     // https://docs.sst.dev/advanced/removal-policy#changing-the-removal-policy
-    app.setDefaultRemovalPolicy("destroy");
+    // Remove all resources when non-prod stages are removed
+    if (app.stage !== "prod") {
+      app.setDefaultRemovalPolicy("destroy");
+    }
   },
 } satisfies SSTConfig;

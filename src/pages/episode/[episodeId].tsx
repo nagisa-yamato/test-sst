@@ -10,6 +10,7 @@ import { type GetServerSideProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Config } from "sst/node/config";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const queryClient = new QueryClient();
@@ -25,7 +26,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   };
   await queryClient.prefetchQuery({
     queryKey: createEpisodeQueryKey(variables),
-    queryFn: async ({ signal }) => await fetchEpisode({ signal, variables }),
+    queryFn: async ({ signal }) =>
+      await fetchEpisode({ signal, variables, url: Config.API_ENDPOINT }),
   });
 
   return {
