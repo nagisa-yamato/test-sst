@@ -1,7 +1,26 @@
 import { createEpisodesQueryKey, fetchEpisodes } from "@/gql/queries/Episodes";
-import { useQuery } from "@tanstack/react-query";
+import { QueryClient, dehydrate, useQuery } from "@tanstack/react-query";
+import { type GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const queryClient = new QueryClient();
+  const variables = {
+    page: typeof query.page === "string" ? Number(query.page) : 1,
+  };
+
+  await queryClient.prefetchQuery({
+    queryKey: createEpisodesQueryKey(variables),
+    queryFn: async ({ signal }) => await fetchEpisodes({ signal, variables }),
+  });
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+};
 
 export default function Index(): JSX.Element {
   const router = useRouter();

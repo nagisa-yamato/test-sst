@@ -1,3 +1,6 @@
+const path = require("path");
+require("dotenv").config({ path: path.resolve(process.cwd(), ".env.local") });
+
 module.exports = {
   env: {
     browser: true,
@@ -22,7 +25,7 @@ module.exports = {
       extends: ["plugin:@graphql-eslint/operations-recommended"],
       parserOptions: {
         operations: "./src/**/*.(ts|tsx)",
-        schema: "https://rickandmortyapi.com/graphql",
+        schema: process.env.API_ENDPOINT,
       },
     },
     {

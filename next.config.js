@@ -5,7 +5,7 @@ const nextConfig = {
     return [
       {
         source: "/api/graphql",
-        destination: "https://rickandmortyapi.com/graphql",
+        destination: process.env.API_ENDPOINT,
       },
     ];
   },

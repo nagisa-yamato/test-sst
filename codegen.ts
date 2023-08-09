@@ -1,8 +1,14 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
+import { config } from "dotenv";
+import path from "path";
+config({
+  // https://github.com/motdotla/dotenv#path
+  path: path.resolve(process.cwd(), ".env.local"),
+});
 
-const config: CodegenConfig = {
+const codegenConfig: CodegenConfig = {
   overwrite: true,
-  schema: "https://rickandmortyapi.com/graphql",
+  schema: process.env.API_ENDPOINT,
   // https://the-guild.dev/graphql/codegen/docs/config-reference/documents-field#document-scanner
   documents: "src/**/!(*.d).{ts,tsx}",
   ignoreNoDocuments: true,
@@ -21,4 +27,4 @@ const config: CodegenConfig = {
   hooks: { afterOneFileWrite: ["prettier --write"] },
 };
 
-export default config;
+export default codegenConfig;
