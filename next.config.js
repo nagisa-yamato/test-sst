@@ -1,3 +1,5 @@
+// @ts-check
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -11,11 +13,19 @@ const nextConfig = {
     ],
   },
   async rewrites() {
+    const destination = process.env.API_ENDPOINT;
+    if (destination === undefined) {
+      throw new Error("API_ENDPOINT is not defined");
+    }
     return [
-      {
-        source: "/api/graphql",
-        destination: process.env.API_ENDPOINT,
-      },
+      ...(process.env.NODE_ENV === "development"
+        ? [
+            {
+              source: "/api/graphql",
+              destination,
+            },
+          ]
+        : []),
     ];
   },
   webpack(config) {
